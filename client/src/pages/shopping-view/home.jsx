@@ -98,11 +98,11 @@ slides.map((slide,index)=>(
    />
 ))
             }
-            <Button variant="outline " size="icon" className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/80" onClick={()=>setcurrentSlide(prevSlide=>(prevSlide-1+slides.length)%slides.length)}>
+            <Button variant="outline" size="icon" className="absolute top-1/2 left-4 z-20 transform -translate-y-1/2 bg-white/80" onClick={()=>setcurrentSlide(prevSlide=>(prevSlide-1+slides.length)%slides.length)}>
 
                 <ChevronLeftIcon className="w-4 h-4" />
             </Button>
-            <Button variant="outline " size="icon" className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-white/80" onClick={()=>setcurrentSlide(prevSlide=>(prevSlide+1)%slides.length)}>
+            <Button variant="outline" size="icon" className="absolute top-1/2 z-20 right-4 transform -translate-y-1/2 bg-white/80" onClick={()=>setcurrentSlide(prevSlide=>(prevSlide+1)%slides.length)}>
 
                 <ChevronRightIcon className="w-4 h-4" />
             </Button>

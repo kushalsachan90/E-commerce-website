@@ -1,4 +1,4 @@
-const Address=require('../../models/address')
+const Address = require('../../models/address')
 
 
 
@@ -22,7 +22,7 @@ const addAddress=async(req,res)=>{
          await newlyCreatedAddress.save();
          res.status(201).json({
             success:true,
-            message:newlyCreatedAddress
+            data:newlyCreatedAddress
          })
 
     }
@@ -38,6 +38,28 @@ const addAddress=async(req,res)=>{
 
 const editAddress=async(req,res)=>{
     try{
+    const {userId,addressId}=req.params;
+    if(!userId||!addressId){
+    return res.status(400).json({
+        success:false,
+        message:"user id is required"
+    })
+}
+    const address=await Address.findOneAndUpdate({
+        _id:addressId,userId
+    },formData,{new:true})
+
+    if(!address){
+        return res.status(404).json({
+            success:false,
+            messae:"Address not found"
+        })
+    }
+    res.status(200).json({
+        success:true,
+        data:address
+    })
+
 
     }
     catch(error){
@@ -52,7 +74,18 @@ const editAddress=async(req,res)=>{
 
 const fetchAllAddress=async(req,res)=>{
     try{
-
+const {userId}=req.params
+if(!userId){
+    return res.status(400).json({
+        success:false,
+        message:"user id is required"
+    })
+}
+const addressList=await Address.find({userId})
+ res.status(200).json({
+    success:true,
+    data:addressList
+ })
     }
     catch(error){
         console.log(error);
@@ -66,7 +99,24 @@ const fetchAllAddress=async(req,res)=>{
 
 const deleteAddress=async(req,res)=>{
     try{
-
+         const {userId,addressId}=req.params;
+         if(!userId||!addressId){
+    return res.status(400).json({
+        success:false,
+        message:"user id  and address id is required"
+    })
+}
+const address =await Address.findOneAndDelete({_id:addressId,userId})
+  if(!address){
+        return res.status(404).json({
+            success:false,
+            messae:"Address not found"
+        })
+    }
+    res.status(200).json({
+        success:true,
+        message:"Address deleted successfully"
+    })
     }
     catch(error){
         console.log(error);
