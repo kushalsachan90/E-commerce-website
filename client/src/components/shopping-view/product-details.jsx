@@ -88,3 +88,5 @@ function ProductDetailsDialog({open,setOpen,productDetails,handleAddtoCart}){
     )
 }
 export default ProductDetailsDialog
+
+

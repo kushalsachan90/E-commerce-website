@@ -1,7 +1,7 @@
 import { Tabs,TabsList,TabsTrigger,TabsContent } from "@/components/ui/tabs"
 import accImg from "../../assets/account.jpg"
 import Address from "@/components/shopping-view/address"
-import Orders from "@/components/shopping-view/orders"
+import ClientOrders from "@/components/shopping-view/orders"
 function Accountpage(){
     return <div className="flex flex-col"> 
    <div className="relative h-[300px] w-full overflow-hidden ">
@@ -17,7 +17,7 @@ function Accountpage(){
              <TabsTrigger value="address">Address</TabsTrigger>
           </TabsList>
           <TabsContent value="order">
-<Orders/>
+<ClientOrders/>
           </TabsContent>
           <TabsContent value="address">
 <Address/>

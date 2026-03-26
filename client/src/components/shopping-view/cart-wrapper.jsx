@@ -4,7 +4,7 @@ import { Minus,Plus,Trash } from "lucide-react"
 import { DeleteCartItem } from "@/store/cart-slice";
 import { updateCartItem } from "@/store/cart-slice";
  function UserCartWrapper({cartItems}){
-    console.log(cartItems,"cartItems")
+    console.log(cartItems,"cartItems,userCartWrapper")
     const dispatch=useDispatch();
       const {user}=useSelector((state)=>state.auth)
        function hanldleDeleteItem(getcartItem){

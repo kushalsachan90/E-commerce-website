@@ -39,6 +39,8 @@ const addAddress=async(req,res)=>{
 const editAddress=async(req,res)=>{
     try{
     const {userId,addressId}=req.params;
+    const formData=req.body
+    
     if(!userId||!addressId){
     return res.status(400).json({
         success:false,
@@ -66,7 +68,7 @@ const editAddress=async(req,res)=>{
         console.log(error);
         res.status(404).json({
             success:false,
-            message:'Error'
+            message:error.message
         })
     }
 }
@@ -122,7 +124,7 @@ const address =await Address.findOneAndDelete({_id:addressId,userId})
         console.log(error);
         res.status(404).json({
             success:false,
-            message:'Error'
+            message:error.message
         })
     }
 }

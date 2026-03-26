@@ -1,8 +1,8 @@
 
-import {Card, CardContent } from "../ui/card";
+import {Card, CardContent, CardFooter } from "../ui/card";
 import { Label } from "../ui/label";
-
-function AddressCart({addressInfo}){
+import { Button } from "../ui/button";
+function AddressCart({addressInfo,handledeleteAddress,handleEditAddress}){
     return (
         <Card>
             <CardContent className="grid gap-4">
@@ -13,6 +13,12 @@ function AddressCart({addressInfo}){
                 <Label>notes: {addressInfo.notes}</Label>
 
             </CardContent>
+            <CardFooter className="gap-4">
+                <Button onClick={()=>handleEditAddress((addressInfo))}> Edit </Button>
+                    
+                
+                <Button onClick={()=>handledeleteAddress((addressInfo))}>Delete</Button>
+            </CardFooter>
         </Card>
     )
 }

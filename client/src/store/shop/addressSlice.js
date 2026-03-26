@@ -17,14 +17,14 @@ export const fetchAllAddress=createAsyncThunk('/addresses/fetchNewAddress',async
 })
 
 
-export const editAddress=createAsyncThunk('/addresses/editNewAddress',async(userId,AddressId,formData)=>{
-    const response=await axios.post(`http://localhost:5000/api/shop/address/editAddress/${userId}/${AddressId}`,formData)
+export const editAddress=createAsyncThunk('/addresses/editNewAddress',async({userId,AddressId,formData})=>{
+    const response=await axios.put(`http://localhost:5000/api/shop/address/editAddress/${userId}/${AddressId}`,formData)
     return response.data
 })
 
 
-export const deleteAddress=createAsyncThunk('/addresses/deleteNewAddress',async(userId,AddressId)=>{
-    const response=await axios.post(`http://localhost:5000/api/shop/address/deleteAddress/${userId}/${AddressId}`)
+export const deleteAddress=createAsyncThunk('/addresses/deleteNewAddress',async({userId,AddressId})=>{
+    const response=await axios.delete(`http://localhost:5000/api/shop/address/deleteAddress/${userId}/${AddressId}`)
     return response.data
 })
 
