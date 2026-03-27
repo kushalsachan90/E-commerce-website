@@ -7,6 +7,7 @@
       const shopProductRoutes=require('./routes/shop/product-routes')
       const shopCartRoutes=require('./routes/shop/cart-routes')
       const shopAddress=require('./routes/shop/address-routes')
+      const shopOrderRouter=require('./routes/shop/order-routes')
       //connection with database
    mongoose.connect("mongodb+srv://kushalsachan90:kushalsachan90@cluster0.otitepz.mongodb.net/")
    .then(()=>console.log("connected to database"))
@@ -33,6 +34,7 @@ app.use('/api/admin/products',adminProductsRoutes)
  app.use('/api/shop/products',shopProductRoutes)
 app.use('/api/shop/cart',shopCartRoutes)
 app.use('/api/shop/address',shopAddress)
+app.use('/api/shop/order',shopOrderRouter)
 
 const PORT =process.env.PORT||5000;
 

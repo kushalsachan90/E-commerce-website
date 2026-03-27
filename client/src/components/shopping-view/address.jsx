@@ -16,12 +16,13 @@ const initialAddressFormData={
     notes:''
 }
 
-function Address(){
+function Address({setCurrentSelectedAddress}){
 
     const [formData,setFormData]=useState(initialAddressFormData)
     const [currentEditId,setcurrentEditId]=useState(null)
     const {user}=useSelector(state=>state.auth)
     const {addressList}=useSelector(state=>state.Address)
+    console.log(addressList,"addressList")
     const dispatch=useDispatch()
     console.log(user,"user from store")
 
@@ -104,7 +105,7 @@ function Address(){
 return <Card>
         <div className="mb-5 =-3 grid grid-cols-1 sm:grid-cols-2  gap-2">
        {
-        addressList && addressList.length>0? addressList.map(singleitem=><AddressCart handleEditAddress={handleEditAddress} addressInfo={singleitem} handledeleteAddress={handledeleteAddress}/>):null
+        addressList && addressList.length>0? addressList.map(singleitem=><AddressCart setCurrentSelectedAddress={setCurrentSelectedAddress} handleEditAddress={handleEditAddress} addressInfo={singleitem} handledeleteAddress={handledeleteAddress}/>):null
        }
         </div>
         <CardHeader>
