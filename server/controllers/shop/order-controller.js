@@ -1,8 +1,9 @@
 const paypal=require('../../helpers/paypal')
 const Order =require('../../models/orders')
+const Cart=require('../../models/cart')
 const createOrder=async(req ,res)=>{
     try {
-        const {userId,cartItems,addressInfo,orderStatus,paymentMethod,paymentStatus,totalAmount,orderData,orderUpdateDate,paymentId,payerId}=req.body;
+        const {userId,cartItems,addressInfo,orderStatus,paymentMethod,paymentStatus,totalAmount,orderDate,orderUpdateDate,paymentId,payerId,cartId}=req.body;
 
          const create_payment_json = {
   intent: 'sale',
@@ -43,7 +44,7 @@ paypal.payment.create(create_payment_json,async(error,paymentInfo)=>{   //callin
 }
 else{
   const newlyCreatedOrder =new Order({
-    userId,cartItems,addressInfo,orderStatus,paymentMethod,paymentStatus,totalAmount,orderData,orderUpdateDate,paymentId,payerId
+    userId,cartItems,addressInfo,orderStatus,paymentMethod,paymentStatus,totalAmount,orderDate,orderUpdateDate,paymentId,payerId,cartId
   })
   await newlyCreatedOrder.save()
   const approvalUrl=paymentInfo.links.find(link=>link.rel==='approval_url').href;
@@ -70,7 +71,27 @@ else{
 
 const capturePayment=async(req ,res)=>{
     try {
-        
+        const {paymentId,payerId,orderId}=req.body
+        let order=await Order.findById(orderId)
+        if(!order){
+          return res.status(400).json({
+            success:false,
+            message:'Order not found'
+          })
+        }
+        order.paymentStatus='paid',
+        order.orderStatus='confirmed',
+        order.paymentId=paymentId,
+        order.payerId=payerId;
+        const getCardId=order.cartId;
+        await  Cart.findByIdAndDelete(getCardId)
+
+
+        await order.save()
+        res.status(200).json({
+          success:true,
+          message:'Order confirmed'
+        })
     } catch (error) {
         console.log(error)
         res.status(500).json({
@@ -81,7 +102,56 @@ const capturePayment=async(req ,res)=>{
 }
 
 
-module.exports={capturePayment,createOrder}
+const getAllOrdersByUser=async(req,res)=>{
+  try {
+    const {userId}=req.params;
+    const orders=await Order.find({userId})  // return arrayof Object
+   
+    if(!orders){
+      return res.status(404).json({
+        success:false,
+        message:'no order found'
+      })
+    }
+    res.status(200).json({
+      success:true,
+      message:orders
+    })
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success:false,
+      message:'some error occurred',
+    })
+  }
+}
+
+
+const getAllOrdersDetails=async(req,res)=>{
+  try {
+   const {id}=req.params;
+       const order=await Order.findById({id})  // return object only 
+   
+    if(!order){
+      return res.status(404).json({
+        success:false,
+        message:'order not found'
+      })
+
+  } 
+  res.status(200).json({
+      success:true,
+      message:order
+    })
+}catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success:false,
+      message:'some error occurred',
+    })
+  }
+}
+module.exports={capturePayment,createOrder,getAllOrdersByUser,getAllOrdersDetails}
 
 
 

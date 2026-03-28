@@ -4,9 +4,24 @@ import { Table, TableHeader,TableRow,TableHead,TableBody,TableCell } from "../ui
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import ShoppingOrderDetailsView from "./order-details";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllOrdersByUser } from "@/store/order-slice";
 function ClientOrders(){
     const [openDetailsDialog,setopenDetailsDialog]=useState(false)
+
+    const dispatch=useDispatch()
+
+    const {user}=useSelector(state=>state.auth);
+    const {orderList}=useSelector(state=>state.Orderdetails)
+    useEffect(() => {
+  if (user?.id) {
+    dispatch(getAllOrdersByUser(user.id)).then((data)=>{
+        console.log(data,'data')
+    })
+  }
+}, [dispatch, user])
+    console.log(orderList,"orderList")
 return  <Card>
    <CardHeader>
     <CardTitle className="text-[20px] font-bold">
@@ -25,11 +40,12 @@ return  <Card>
             </TableRow>
         </TableHeader>
         <TableBody>
-            <TableRow>
-                <TableCell>114314</TableCell>
-                                <TableCell>12/12/12</TableCell>
-                                     <TableCell>inprocess</TableCell>
-                                 <TableCell>$100</TableCell>
+            {
+                orderList&&orderList.length>0?orderList.map(orderItem=>  <TableRow>
+                <TableCell>{orderItem._id}</TableCell>
+                                <TableCell>{orderItem.orderDate.split('T')[0]}</TableCell>
+                                     <TableCell>{orderItem.orderStatus}</TableCell>
+                                 <TableCell>${orderItem.totalAmount}</TableCell>
                                                   <TableCell>
                                                     <Dialog open={openDetailsDialog} onOpenChange={setopenDetailsDialog}>
                                                     <Button onClick={()=>setopenDetailsDialog(true)}>view Details</Button>
@@ -37,7 +53,9 @@ return  <Card>
                                                     </Dialog>
                                                   </TableCell>
 
-            </TableRow>
+            </TableRow>):null
+            }
+          
         </TableBody>
     </Table>
    </CardContent>

@@ -36,6 +36,8 @@ import UserCartWrapper from '@/components/shopping-view/cart-wrapper'  // ✅ ch
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 import { createNewOrder } from '@/store/order-slice'
+import { current } from '@reduxjs/toolkit'
+import { toast } from 'sonner'
 function CheckOut(){
   const dispatch=useDispatch()
 
@@ -44,6 +46,7 @@ function CheckOut(){
 
          const {user}=useSelector(state=>state.auth)
           const {approvalUrl}=useSelector(state=>state.Orderdetails)
+         
           const [currentSelectedAddress,setCurrentSelectedAddress]=useState(null)
           const [isPaymentStart,SetIsPayment]=useState(false)
           console.log(currentSelectedAddress,'currentSelectedAddress')
@@ -53,8 +56,19 @@ const totalCartAmount = cartItems?.items?.length > 0
             sum + (currentItem.salePrice > 0 ? currentItem.salePrice : currentItem.price) * currentItem.quantity, 0)
         : 0;
          function handleInitiatePaypalpayment(){
+            
+            if(cartItems.length==0){
+                toast("your cart is empty please add items");
+                return ;
+            }
+
+            if(currentSelectedAddress==null){
+              toast.error('Address not selected')
+              return ;
+            }
             const orderData={
                 userId:user.id,
+                cartId:cartItems._id,
                 cartItems: cartItems.items.map(singleCartItems=>({
 title:singleCartItems.title,
 image:singleCartItems.image,
@@ -105,7 +119,7 @@ if(approvalUrl){
                 <img src={img} alt="account-img" className="h-full w-full object-cover object-center" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5 p-5">
-                <Address setCurrentSelectedAddress={setCurrentSelectedAddress}/>
+                <Address setCurrentSelectedAddress={setCurrentSelectedAddress} currentSelectedAddress={currentSelectedAddress}/>
                 <div className="flex flex-col gap-4">
                     {cartItems?.items?.length > 0 ? (
                         <>
