@@ -7,7 +7,8 @@ import { logOutUser } from "@/store/auth-slice";
 function AdminHeader({setopen}){
    const dispatch=useDispatch()
 function handleLogOut(){
- dispatch(logOutUser())
+ dispatch(logOutUser());
+
 }
 
    return <header className="flex items-center justify-between px-4 py-3 bg-background border-b ">

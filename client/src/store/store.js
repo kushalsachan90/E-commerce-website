@@ -5,6 +5,9 @@ import shopProductSliceReducer  from './shop/product-slice'
 import shopCartSliceReducer from './cart-slice'
  import shopAddressSlice from './shop/addressSlice'
  import shopOrderSlice from './order-slice/index'
+ import adminOrderslice from './admin/orderSlice/index'
+ import searchSlice from './shop/search-slice/search-slice';
+ import reviewSlice from './shop/review-slice/review'
 const store = configureStore({
     reducer: {
         auth: authReducer,
@@ -12,7 +15,10 @@ const store = configureStore({
         shopProducts:shopProductSliceReducer,
         cartProduct:shopCartSliceReducer,
         Address:shopAddressSlice,
-        Orderdetails:shopOrderSlice
+        Orderdetails:shopOrderSlice,
+        adminOrderDetails:adminOrderslice,
+        searchProducts:searchSlice,
+        reviewProduct:reviewSlice
     }
 });
 

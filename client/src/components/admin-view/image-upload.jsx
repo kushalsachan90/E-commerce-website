@@ -5,7 +5,7 @@ import { UploadCloudIcon, XIcon,File} from "lucide-react";
 import { useEffect } from "react";
 import axios from "axios";
 import { Skeleton } from "../ui/skeleton";
-function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploadedImageUrl,setImageLoadingState,imageLoadingState,isEditMode}){
+function ProductImageUpload({imageFile,setImageFile,uploadedImageUrl,setUploadedImageUrl,setImageLoadingState,imageLoadingState,isEditMode,isCustomStyling=false}){
     const inputRef=useRef(null);
  console.log(isEditMode,'isEditMode');
     function handleImageFileChange(event){
@@ -53,7 +53,7 @@ useEffect(()=>{
 
     return (
         <div className="w-full max-w-md mx-auto">
-            <Label className="text-lg font-semibold mb-2 block ml-2">
+            <Label className={`text-lg font-semibold mb-2 block ml-2 w-full ${isCustomStyling?'':"max-w-md mx-auto"}`}>
                 Upload Image
             </Label>
             <div onDragOver={handleDragOver} onDrop={handleDrop} className="border-2 border-dashed rounded-lg  p-4">

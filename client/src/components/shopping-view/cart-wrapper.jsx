@@ -3,6 +3,7 @@ import { Button } from "../ui/button"
 import { Minus,Plus,Trash } from "lucide-react"
 import { DeleteCartItem } from "@/store/cart-slice";
 import { updateCartItem } from "@/store/cart-slice";
+import { toast } from "sonner";
  function UserCartWrapper({cartItems}){
    
     const dispatch=useDispatch();
@@ -10,7 +11,38 @@ import { updateCartItem } from "@/store/cart-slice";
        function hanldleDeleteItem(getcartItem){
               dispatch(DeleteCartItem({userId:user.id,productId:getcartItem.productId}))
        }
+
+        const { cartItems: allCartItems } = useSelector(state => state.cartProduct)   // ✅ add this
+    const { productList } = useSelector(state => state.shopProducts)
+
         function handleupdatecart(getcartItem,typeofAction){
+
+            if(typeofAction=='add'){
+                  let getCartItems =allCartItems.items||[];
+    
+    
+        if (getCartItems.length) {
+            const indexOfCurrentItem = getCartItems.findIndex(
+                item => item.productId === getcartItem.productId  // ✅ Bug 1 & 3 fixed
+            );
+
+            const getCurrentProductIndex = productList.findIndex(
+                product => product._id === getcartItem.productId
+            );
+
+            const gettotalStock = productList[getCurrentProductIndex]?.totalStock  // ✅ Bug 2 fixed
+
+            console.log(gettotalStock,getCurrentProductIndex,"gettotalstock")
+
+            if (indexOfCurrentItem > -1) {
+                const getQuantity = getCartItems[indexOfCurrentItem].quantity;
+                if (getQuantity + 1 > gettotalStock) {
+                    toast.error(`Only ${gettotalStock} quantity can be added for this item`);
+                    return;
+                }
+            }
+        }
+    }
             dispatch(updateCartItem({userId:user.id,productId:getcartItem.productId,quantity: typeofAction==='add'?getcartItem.quantity+1:getcartItem.quantity-1}))
         }
 

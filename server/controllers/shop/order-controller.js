@@ -1,6 +1,8 @@
 const paypal=require('../../helpers/paypal')
 const Order =require('../../models/orders')
 const Cart=require('../../models/cart')
+const Product=require('../../models/product')
+
 const createOrder=async(req ,res)=>{
     try {
         const {userId,cartItems,addressInfo,orderStatus,paymentMethod,paymentStatus,totalAmount,orderDate,orderUpdateDate,paymentId,payerId,cartId}=req.body;
@@ -68,7 +70,6 @@ else{
     }
 }
 
-
 const capturePayment=async(req ,res)=>{
     try {
         const {paymentId,payerId,orderId}=req.body
@@ -83,6 +84,30 @@ const capturePayment=async(req ,res)=>{
         order.orderStatus='confirmed',
         order.paymentId=paymentId,
         order.payerId=payerId;
+
+       for (let item of order.cartItems) {
+        
+  let product = await Product.findById(item.productId);
+
+
+  if (!product) {
+    return res.status(404).json({
+      success: false,
+      message: `Product not found: ${item.title}`  // ✅ item.title, not product.title
+    });
+  }
+
+  if (product.totalStock < item.quantity) {
+    return res.status(400).json({
+      success: false,
+      message: `Not enough stock for ${product.title}`
+    });
+  }
+
+  product.totalStock -= item.quantity;
+  await product.save();
+}
+         
         const getCardId=order.cartId;
         await  Cart.findByIdAndDelete(getCardId)
 
@@ -100,7 +125,6 @@ const capturePayment=async(req ,res)=>{
         })
     }
 }
-
 
 const getAllOrdersByUser=async(req,res)=>{
   try {
@@ -130,7 +154,7 @@ const getAllOrdersByUser=async(req,res)=>{
 const getAllOrdersDetails=async(req,res)=>{
   try {
    const {id}=req.params;
-       const order=await Order.findById({id})  // return object only 
+       const order=await Order.findById(id)  // return object only 
    
     if(!order){
       return res.status(404).json({

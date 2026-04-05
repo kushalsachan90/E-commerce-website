@@ -11,6 +11,7 @@ return (
             <div className="relative">
                 <img src={product.image} alt={product.title} className="w-full h-[300px] rounded-t-lg object-cover" />
                 {
+                    product.totalStock===0? <Badge className="absolute top-2 left-2 bg-red-600 hover:bg-red-700">Out of Stock </Badge>:product.salePrice>0? <Badge className="absolute top-2 left-2 bg-red-600 hover:bg-red-700">{`only ${product.totalStock} items left`} </Badge>:
                     product.salePrice>0?
                     (<Badge className="absolute top-2 left-2 bg-red-600 hover:bg-red-700">sale </Badge>):null
                 }
@@ -33,7 +34,10 @@ return (
             
         </div>
         <CardFooter>
-                <Button onClick={()=>handleAddtoCart(product._id)} className="w-full">Add to Cart</Button>
+            {
+                product.totalStock===0? <Button  className="w-full opacity-60 cursor-not allowed">Out of Stock</Button>: <Button onClick={()=>handleAddtoCart(product._id,product.totalStock)} className="w-full">Add to Cart</Button>
+            }
+               
             </CardFooter>
 
     </Card>

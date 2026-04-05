@@ -14,6 +14,7 @@ import { getProductDetails } from "@/store/shop/product-slice";
 import ProductDetailsDialog from "@/components/shopping-view/product-details";
 import { fetchCartItem } from "@/store/cart-slice";
 import { addToCart } from "@/store/cart-slice";
+
 import { toast } from "sonner";
 function ShoppingHome(){
  const [openDetailsDialog,setOpenDetailsDialog]=useState(false)
@@ -25,8 +26,25 @@ function handleProductDetails(getCurrrentProductid){
 
 }
 const { user } = useSelector(state => state.auth)
-function handleAddtoCart(getProductid){
+const {cartItems}=useSelector(state=>state.cartProduct)
+function handleAddtoCart(getProductid,gettotalStock){
     console.log(getProductid,"getProductId")
+      let getCartItems =cartItems.items||[];
+    console.log("getProductid:", getProductid)
+    console.log("gettotalStock:", gettotalStock)  // 👈 is this undefined?
+    console.log("getCartItems:", getCartItems)
+    if(getCartItems.length){
+          const indexOfCurrentItem=getCartItems.findIndex(item=>item.productId===getProductid);
+          console.log(indexOfCurrentItem,"indexOfCurrentItem")
+          if(indexOfCurrentItem>-1){
+const getQuantity=getCartItems[indexOfCurrentItem].quantity
+if(getQuantity+1>gettotalStock){
+    toast(`Only ${getQuantity} quantity can be added for this item`)
+    return;
+}
+          }
+          
+    }
     dispatch(addToCart({userId:user.id,productId:getProductid,quantity:1})).then((data)=>{
         console.log(data,'data of addtocart')
         if(data.payload.success){

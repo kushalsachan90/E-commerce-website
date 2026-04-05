@@ -20,6 +20,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import CheckOut from "./pages/shopping-view/checkOut"
 import PaypalReturn from "./components/shopping-view/paypal-return";
 import PaymentSuccess from "./components/shopping-view/payment-success";
+import SearchProducts from "./pages/search";
 function App() {
  const {user,isAuthenticated,isLoading}=useSelector(state=>state.auth)
  const dispatch=useDispatch();
@@ -34,6 +35,9 @@ function App() {
     <div className="flex flex-col overflow-hidden bg-white">
       
       <Routes>
+        <Route path="/" element={
+          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+          </CheckAuth>}/>
         <Route path="/auth" element={
           <CheckAuth isAuthenticated={isAuthenticated} user={user}>
             <AuthLayout />
@@ -59,6 +63,7 @@ function App() {
            <Route path="checkout" element={<CheckOut />} />
            <Route path="paypal-return" element={<PaypalReturn/>} />
            <Route path="payment-success" element={<PaymentSuccess />}></Route>
+           <Route path="search" element={<SearchProducts />}></Route>
         </Route>
          
          <Route path="/unauth-page" element={<UnauthPage/>}/>

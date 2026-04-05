@@ -37,6 +37,10 @@ const dispatch=useDispatch();
  const [sort ,setsort]=useState(null);
  const [openDetailsDialog,setOpenDetailsDialog]=useState(false)
  console.log(filters,'filter')
+
+
+const categorySearchParam=serarchParams.get('category')
+
  function handleSort(value){
 console.log(value);
 setsort(value)
@@ -70,7 +74,7 @@ const indexOfCurrentSection=Object.keys(cpyFilters).indexOf(getsectionId)
 useEffect(()=>{
     setsort("price-low-to-high");
     setfilters(JSON.parse(sessionStorage.getItem("filters")||null))
-},[dispatch])
+},[categorySearchParam])
 
 
 useEffect(()=>{
@@ -97,15 +101,35 @@ useEffect(()=>{
   }  
 },[productDetails])
 
- console.log(productDetails,'productDetails')
+ console.log(productList,'productList')
 
  const {user}=useSelector(state=>state.auth)
 
 
  console.log(user,"userId")
+const {cartItems}=useSelector((state)=>state.cartProduct);
+console.log(cartItems,"cartItems")
 
- function handleAddtoCart(getProductid){
+
+ function handleAddtoCart(getProductid,gettotalStock){
     console.log(getProductid,"getProductId")
+
+    let getCartItems =cartItems.items||[];
+    console.log("getProductid:", getProductid)
+    console.log("gettotalStock:", gettotalStock)  // 👈 is this undefined?
+    console.log("getCartItems:", getCartItems)
+    if(getCartItems.length){
+          const indexOfCurrentItem=getCartItems.findIndex(item=>item.productId===getProductid);
+          console.log(indexOfCurrentItem,"indexOfCurrentItem")
+          if(indexOfCurrentItem>-1){
+const getQuantity=getCartItems[indexOfCurrentItem].quantity
+if(getQuantity+1>gettotalStock){
+    toast(`Only ${getQuantity} quantity can be added for this item`)
+    return;
+}
+          }
+          
+    }
     dispatch(addToCart({userId:user.id,productId:getProductid,quantity:1})).then((data)=>{
         if(data.payload.success){
             dispatch(fetchCartItem(user.id));

@@ -70,6 +70,7 @@ const totalCartAmount = cartItems?.items?.length > 0
                 userId:user.id,
                 cartId:cartItems._id,
                 cartItems: cartItems.items.map(singleCartItems=>({
+                    productId: singleCartItems.productId,
 title:singleCartItems.title,
 image:singleCartItems.image,
 price:singleCartItems.salePrice>0? singleCartItems.salePrice:singleCartItems.price,
