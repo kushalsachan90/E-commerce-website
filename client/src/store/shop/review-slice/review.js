@@ -6,13 +6,13 @@ const initialState={
 }
 
 // export const addProductReview= createAsyncThunk('/addProduct/reviewSlice',async({productId,userId,userName,reviewMessage,reviewValue})=>{
-//     const response=await axios.post('http://localhost:5000/api/shop/review/add',{productId,userId,userName,reviewMessage,reviewValue});
+//     const response=await axios.post('import.meta.env.VITE_API_URL/api/shop/review/add',{productId,userId,userName,reviewMessage,reviewValue});
 //     return response.data
 // })
 export const addProductReview = createAsyncThunk('/addProduct/reviewSlice', 
     async({ productId, userId, userName, reviewMessage, reviewValue }, { rejectWithValue }) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/shop/review/add', 
+            const response = await axios.post('${import.meta.env.VITE_API_URL}/api/shop/review/add', 
                 { productId, userId, userName, reviewMessage, reviewValue });
             return response.data  // ✅ success case → goes to payload
         } catch(error) {
@@ -22,7 +22,7 @@ export const addProductReview = createAsyncThunk('/addProduct/reviewSlice',
 )
 
 export const getProductReview= createAsyncThunk('/getProduct/reviewSlice',async(id)=>{
-    const response=await axios.get(`http://localhost:5000/api/shop/review/get/${id}`);
+    const response=await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/review/get/${id}`);
     return response.data
 })
 

@@ -1,3 +1,4 @@
+    require("dotenv").config()
     const express=require('express');
     const mongoose=require('mongoose');
     const cookieParser=require('cookie-parser');
@@ -16,12 +17,12 @@
     const CommonFeatureRouter=require('./routes/common/feature-routes')
       const shopReviewRoutes=require('./routes/shop/review-routes')
       //connection with database
-   mongoose.connect("mongodb+srv://kushalsachan90:kushalsachan90@cluster0.otitepz.mongodb.net/?appName=Cluster0")
+   mongoose.connect(process.env.MONGO_URL)
    .then(()=>console.log("connected to database"))
       .catch((err)=>console.log(err));
 const app=express();
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:process.env.CLIENT_BASE_URL,
     credentials:true,
     methods:["GET","POST","PUT","DELETE"],
     allowedHeaders:[
@@ -47,7 +48,7 @@ app.use('/api/shop/search',SearchRouter);
 app.use('/api/shop/review',shopReviewRoutes)
 app.use('/api/common/feature',CommonFeatureRouter)
 
-const PORT =process.env.PORT||5000;
+const PORT =process.env.PORT;
 
 
 app.listen(PORT,()=>console.log(`server is running on port ${PORT}`));

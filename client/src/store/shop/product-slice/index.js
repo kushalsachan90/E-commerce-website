@@ -14,13 +14,13 @@ export const fetchAllFilteredProduct=createAsyncThunk('/shopproduct/fetchAllProd
 
     })
     console.log(query.toString(),"query")
-    const result=await axios.get(`http://localhost:5000/api/shop/products/get?${query}`)
+    const result=await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/products/get?${query}`)
    
     return result.data
 })
 
 export const getProductDetails=createAsyncThunk('/adminproduct/getProductDetails',async (id)=>{
-    const result=await axios.get(`http://localhost:5000/api/shop/products/get/${id}`)
+    const result=await axios.get(`${import.meta.env.VITE_API_URL}/api/shop/products/get/${id}`)
         console.log(result.data,"result")
     return result.data
 })

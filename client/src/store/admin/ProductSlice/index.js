@@ -7,7 +7,7 @@ const initialState={
 }
 
 export const addNewProduct=createAsyncThunk('/adminproduct/addnewProduct',async (formData)=>{
-    const result=await axios.post('http://localhost:5000/api/admin/products/add',formData ,{
+    const result=await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/products/add`,formData ,{
         headers:{
             'Content-Type':'application/json'
         }
@@ -17,12 +17,12 @@ export const addNewProduct=createAsyncThunk('/adminproduct/addnewProduct',async 
 
 
 export const fetchAllProduct=createAsyncThunk('/adminproduct/fetchAllProduct',async ()=>{
-    const result=await axios.get('http://localhost:5000/api/admin/products/get')
+    const result=await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/products/get`)
     return result.data
 })
 
 // export const getProductDetails=createAsyncThunk('/adminproduct/getProductDetails',async (id)=>{
-//     const result=await axios.get(`http://localhost:5000/api/shop/products/get/${id}`)
+//     const result=await axios.get(`import.meta.env.VITE_API_URL/api/shop/products/get/${id}`)
 //         console.log(result.data,"result")
 //     return result.data
 // })
@@ -30,7 +30,7 @@ export const fetchAllProduct=createAsyncThunk('/adminproduct/fetchAllProduct',as
 
 
 export const editProduct=createAsyncThunk('/adminproduct/editProduct',async ({id,...formData})=>{
-    const result=await axios.put(`http://localhost:5000/api/admin/products/edit/${id}`,formData ,{
+    const result=await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/products/edit/${id}`,formData ,{
         headers:{
             'Content-Type':'application/json'
         }
@@ -39,7 +39,7 @@ export const editProduct=createAsyncThunk('/adminproduct/editProduct',async ({id
 })
 
 export const deleteProduct=createAsyncThunk('/adminproduct/deleteProduct',async (id)=>{
-    const result=await axios.delete(`http://localhost:5000/api/admin/products/delete/${id}`)
+    const result=await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/products/delete/${id}`)
 
     return result.data
 })

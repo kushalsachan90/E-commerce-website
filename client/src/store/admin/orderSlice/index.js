@@ -7,17 +7,17 @@ const initialState={
     orderDetails:null
 }
 export const getAllOrdersforAdmin=createAsyncThunk('/adminOrderSlice/getAllOrdersforAdmin',async()=>{
-    const response=await axios.get(`http://localhost:5000/api/admin/order/get`,)
+    const response=await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/order/get`,)
     return response.data
 })
 
 export const getAllOrdersDetailsforAdmin=createAsyncThunk('/adminOrderSlice/getAllOrdersDetailsforAdmin',async(id)=>{
-    const response=await axios.get(`http://localhost:5000/api/admin/order/details/${id}`,)
+    const response=await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/order/details/${id}`,)
     return response.data
 })
 
 export const updateOrderStatus=createAsyncThunk('/adminOrderSlice/getAllOrdersDetailsforAdmin',async({id,orderStatus})=>{
-    const response=await axios.put(`http://localhost:5000/api/admin/order/update/${id}`,{orderStatus})
+    const response=await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/order/update/${id}`,{orderStatus})
     return response.data
 })
 

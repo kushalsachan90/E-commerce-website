@@ -100,7 +100,7 @@ quantity:singleCartItems.quantity
               console.log(orderData,"orderData")
               dispatch(createNewOrder(orderData)).then((data)=>{
                 console.log(data,'kushal')
-                if(data.payload.success){
+                if(data?.payload?.success){
                    SetIsPayment(true)
                 }else{
                     SetIsPayment(false)
