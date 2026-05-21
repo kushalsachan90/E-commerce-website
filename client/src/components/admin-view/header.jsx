@@ -4,10 +4,15 @@ import { Menu } from "lucide-react";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logOutUser } from "@/store/auth-slice";
+import { useNavigate } from "react-router-dom";
+import {resetTokenCredential} from "@/store/auth-slice";
 function AdminHeader({setopen}){
    const dispatch=useDispatch()
+   const navigate = useNavigate();
 function handleLogOut(){
- dispatch(logOutUser());
+dispatch(resetTokenCredential())
+  sessionStorage.clear()
+  navigate('/auth/login')
 
 }
 

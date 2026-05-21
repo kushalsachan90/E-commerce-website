@@ -51,9 +51,21 @@ const LoginUser=async(req,res)=>{
      const token = jwt.sign({
         id:checkUser._id,role:checkUser.role,Email:checkUser.Email,userName:checkUser.userName
      },'CLIENT_SECRET_KEY',{expiresIn:'60m'})
-     res.cookie('token',token,{httpOnly:true,secure:true}).json({
+    //  res.cookie('token',token,{httpOnly:true,secure:true}).json({
+    //     success:true,
+    //     message:'Logged in successfully',
+    //     user:{
+    //         Email:checkUser.Email,
+    //         role:checkUser.role,
+    //         id:checkUser._id,
+    //         userName:checkUser.userName
+
+    //     }
+    //  })
+      res.status(200).json({
         success:true,
-        message:'Logged in successfully',
+        message:"login successfully",
+        token,
         user:{
             Email:checkUser.Email,
             role:checkUser.role,
@@ -61,8 +73,7 @@ const LoginUser=async(req,res)=>{
             userName:checkUser.userName
 
         }
-     })
-
+      })
 
     }
     catch(error){
@@ -84,7 +95,8 @@ const logoutUser=async(req,res)=>{
 //auth middleware
 
 const authMiddleware=async(req,res,next)=>{
-    const token=req.cookies.token;
+    const authHeader=req.headers['authorization'];
+    const token=authHeader && authHeader.split(' ')[1]
     if(!token) return res.status(401).json({
         success:false,
         message:'Unauthorised user! '

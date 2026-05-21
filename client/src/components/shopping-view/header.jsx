@@ -1,7 +1,6 @@
 
 
 //!test2
-
 import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { House, Menu, ShoppingCart, User, LogOut } from "lucide-react";
 import { Sheet, SheetTrigger, SheetContent } from "../ui/sheet";
@@ -10,11 +9,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { shoppingViewHeaderMenuItems } from "../config";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logOutUser } from "@/store/auth-slice";
+// import { logOutUser } from "@/store/auth-slice";
 import { useEffect, useState } from "react";
 import UserCartItemsWrapper from "./cart-items-content";
 import { fetchCartItem } from "@/store/cart-slice";
 import { Label } from "../ui/label";
+import {resetTokenCredential} from "@/store/auth-slice";
 
 function MenuItems({ onItemClick }) {
   const navigate = useNavigate();
@@ -54,8 +54,10 @@ function HeaderRightContent({ onItemClick, opencartSheet, setOpenCartSheet }) {
   const dispatch = useDispatch();
    const { cartItems } = useSelector(state => state.cartProduct) 
   function handleLogOutUser() {
-    dispatch(logOutUser());
-  
+    // dispatch(logOutUser());
+  dispatch(resetTokenCredential())
+  sessionStorage.clear()
+  navigate('/auth/login')
     onItemClick?.();
   }
 
